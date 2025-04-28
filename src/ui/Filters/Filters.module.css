@@ -1,0 +1,53 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(209, 209, 209);
+  width: 300px;
+  height: calc(100vh - 150px);
+  margin-left: 10px;
+  padding: 20px 20px 20px;
+}
+
+.header {
+  font-weight: 100;
+  margin-bottom: 40px;
+}
+
+.buttonClose {
+  border: 0;
+  background-color: inherit;
+  margin-left: 72%;
+}
+
+.buttonClose:hover {
+  cursor: pointer;
+  transform: scale(1.4);
+}
+
+.sort {
+  font-size: 14px;
+}
+
+.select {
+  border: 0;
+  border-bottom: 2px solid rgb(199, 198, 198);
+  margin-top: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+.header_genre {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.checkboxes {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkboxes input {
+  box-shadow: 0 0 2px rgba(0, 0, 0.23);
+}

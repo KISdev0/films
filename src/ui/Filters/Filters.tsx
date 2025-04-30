@@ -10,6 +10,7 @@ const Filters = () => {
     <div className={styles.filters}>
       <h3 className={styles.header}>
         Фильтры<button className={styles.buttonClose}>X</button>
+        <button className={styles.buttonResetFilters}>Сбросить фильтры</button>
       </h3>
 
       <Select label="Сортировать по:" options={sortOptions} />

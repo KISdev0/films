@@ -1,5 +1,5 @@
 import Filters from "./ui/Filters/Filters";
-import Header from "./ui/Header/Header";
+import { Header } from "./ui/Header/Header";
 import Pagination from "./ui/Pagination/Pagination";
 import "./global.css";
 

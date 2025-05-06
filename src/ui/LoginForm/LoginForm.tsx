@@ -9,12 +9,43 @@ interface LoginFormProps {
 export const LoginForm = ({ onClose }: LoginFormProps) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<{
+    username?: string;
+    password?: string;
+  }>({});
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { login } = useContext(AuthContext);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login({ username }, 'token');
-    onClose();
+
+    const newErrors: { username?: string; password?: string } = {};
+    if (!username.trim()) {
+      newErrors.username = "Введите имя пользователя";
+    }
+    if (!password.trim()) {
+      newErrors.password = "Введите пароль";
+    }
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setUsername("");
+      setPassword("");
+      return;
+    }
+
+    try {
+      setSuccessMessage("Вы авторизировались");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      login({ username }, "token");
+
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+    } catch (error) {
+      setErrors({ password: ` Ошибка авторизации, ${error}` });
+      setSuccessMessage(null);
+    }
   };
 
   return (
@@ -32,7 +63,9 @@ export const LoginForm = ({ onClose }: LoginFormProps) => {
             id="username"
             type="text"
             value={username}
+            className={errors.username ? styles.errors_username : ""}
             onChange={(e) => setUsername(e.target.value)}
+            placeholder={errors.username ? errors.username : ""}
           />
         </div>
         <div>
@@ -41,13 +74,18 @@ export const LoginForm = ({ onClose }: LoginFormProps) => {
             id="password"
             type="password"
             value={password}
+            className={errors.password ? styles.errors_password : ""}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder={errors.password ? errors.password : ""}
           />
         </div>
         <button className={styles.btnLogin} type="submit">
           Войти
         </button>
       </form>
+      {successMessage && (
+        <div className={styles.successMessage}>{successMessage}</div>
+      )}
     </div>
   );
 };

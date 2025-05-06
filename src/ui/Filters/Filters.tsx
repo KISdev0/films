@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import Checkboxes from "../Checkboxes/Checkboxes";
 import Select from "../Select/Select";
 import styles from "./Filters.module.css";
+import { FILTER_OPTIONS } from "../../consts";
 
 type StateType = {
   sortBy: string;
@@ -10,29 +11,29 @@ type StateType = {
 };
 
 type ActionType =
-  | { type: "SET_SORT_BY"; playload: string }
-  | { type: "SET_YEAR"; playload: string }
-  | { type: "TOGGLE_GENRE"; playload: string }
+  | { type: "SET_SORT_BY"; payload: string }
+  | { type: "SET_YEAR"; payload: string }
+  | { type: "TOGGLE_GENRE"; payload: string }
   | { type: "RESET-FILTERS" };
 
 const initialState: StateType = {
-  sortBy: "Популярности",
-  year: "2020",
+  sortBy: "",
+  year: "",
   selectedGenres: [],
 };
 
 const filterReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "SET_SORT_BY":
-      return { ...state, sortBy: action.playload };
+      return { ...state, sortBy: action.payload };
     case "SET_YEAR":
-      return { ...state, year: action.playload };
+      return { ...state, year: action.payload };
     case "TOGGLE_GENRE":
       return {
         ...state,
-        selectedGenres: state.selectedGenres.includes(action.playload)
-          ? state.selectedGenres.filter((g) => g !== action.playload)
-          : [...state.selectedGenres, action.playload],
+        selectedGenres: state.selectedGenres.includes(action.payload)
+          ? state.selectedGenres.filter((g) => g !== action.payload)
+          : [...state.selectedGenres, action.payload],
       };
     case "RESET-FILTERS":
       return initialState;
@@ -42,14 +43,10 @@ const filterReducer = (state: StateType, action: ActionType) => {
 };
 
 const Filters = () => {
-  const sortOptions = ["Популярности", "Дате выхода", "Рейтингу"];
-  const yearOptions = ["2020", "2019", "2018"];
-  const genres = ["Комедия", "Боевик", "Драма"];
-
   const [state, dispatch] = useReducer(filterReducer, initialState);
 
   const handleChangeGenre = (genre: string) => {
-    dispatch({ type: "TOGGLE_GENRE", playload: genre });
+    dispatch({ type: "TOGGLE_GENRE", payload: genre });
   };
 
   const handleResetFilters = () => {
@@ -71,22 +68,24 @@ const Filters = () => {
       <Select
         value={state.sortBy}
         onChange={(e) =>
-          dispatch({ type: "SET_SORT_BY", playload: e.target.value })
+          dispatch({ type: "SET_SORT_BY", payload: e.target.value })
         }
         label="Сортировать по:"
-        options={sortOptions}
+        options={FILTER_OPTIONS.sortOptions}
+        placeholder="Выбрать"
       />
       <Select
         value={state.year}
         onChange={(e) =>
-          dispatch({ type: "SET_YEAR", playload: e.target.value })
+          dispatch({ type: "SET_YEAR", payload: e.target.value })
         }
         label="Год реллиза:"
-        options={yearOptions}
+        options={FILTER_OPTIONS.yearOptions}
+        placeholder="Выбрать"
       />
       <Checkboxes
         label="Жанры"
-        options={genres}
+        options={FILTER_OPTIONS.genres}
         selectedValues={state.selectedGenres}
         onChange={handleChangeGenre}
       />

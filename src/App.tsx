@@ -1,4 +1,4 @@
-import Filters from "./ui/Filters/Filters";
+import { Filters, FiltersProvider } from "./ui/Filters/Filters";
 import { Header } from "./ui/Header/Header";
 import Pagination from "./ui/Pagination/Pagination";
 import "./global.css";
@@ -6,9 +6,11 @@ import "./global.css";
 function App() {
   return (
     <div>
-      <Header />
-      <Filters />
-      <Pagination />
+      <FiltersProvider>
+        <Header />
+        <Filters />
+        <Pagination />
+      </FiltersProvider>
     </div>
   );
 }

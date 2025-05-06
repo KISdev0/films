@@ -1,19 +1,26 @@
-import { useReducer } from "react";
+import { createContext, useReducer } from "react";
 import Checkboxes from "../Checkboxes/Checkboxes";
 import Select from "../Select/Select";
 import styles from "./Filters.module.css";
 
-type StateType = {
+interface StateType {
   sortBy: string;
   year: string;
   selectedGenres: string[];
-};
+}
 
 type ActionType =
   | { type: "SET_SORT_BY"; playload: string }
   | { type: "SET_YEAR"; playload: string }
   | { type: "TOGGLE_GENRE"; playload: string }
   | { type: "RESET-FILTERS" };
+
+interface ContextProps {
+  state: StateType;
+  dispatch: React.Dispatch<ActionType>;
+}
+
+const FiltersContext = createContext<ContextProps | undefined>(undefined);
 
 const initialState: StateType = {
   sortBy: "Популярности",
@@ -41,7 +48,21 @@ const filterReducer = (state: StateType, action: ActionType) => {
   }
 };
 
-const Filters = () => {
+export const FiltersProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [state, dispatch] = useReducer(filterReducer, initialState);
+
+  return (
+    <FiltersContext.Provider value={{ state, dispatch }}>
+      {children}
+    </FiltersContext.Provider>
+  );
+};
+
+export const Filters = () => {
   const sortOptions = ["Популярности", "Дате выхода", "Рейтингу"];
   const yearOptions = ["2020", "2019", "2018"];
   const genres = ["Комедия", "Боевик", "Драма"];
@@ -93,5 +114,3 @@ const Filters = () => {
     </div>
   );
 };
-
-export default Filters;

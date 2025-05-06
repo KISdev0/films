@@ -13,7 +13,7 @@ export const LoginForm = ({ onClose }: LoginFormProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login({ username });
+    login({ username }, 'token');
     onClose();
   };
 
